@@ -615,6 +615,11 @@ body::after {
   box-shadow: 0 0 0 3px var(--stripe-purple-ring);
 }
 
+.field-hint {
+  font-size: 0.75rem;
+  font-weight: 400;
+}
+
 .amount-meta {
   display: flex;
   flex-wrap: wrap;

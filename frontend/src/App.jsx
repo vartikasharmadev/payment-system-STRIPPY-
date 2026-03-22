@@ -5,6 +5,7 @@ import { badgeClass, formatInr, formatTime, statusFromPayment } from "./utils/pa
 
 const SK_CHECKOUT_PAYMENT_ID = "strippy_checkout_payment_id";
 const SK_ACTIVITY_LOGS = "strippy_activity_logs";
+const MIN_AMOUNT_INR = 50;
 
 function readStoredLogs() {
   try {
@@ -102,11 +103,22 @@ function App() {
 
   const amountDisplay = useMemo(() => formatInr(Number(amount) || 0), [amount]);
 
+  const amountNum = Number(amount);
+  const amountMeetsMinimum =
+    Number.isFinite(amountNum) && amountNum >= MIN_AMOUNT_INR;
+
   function pushLog(msg) {
     setState((prev) => ({ ...prev, logs: [`${formatTime()} — ${msg}`, ...prev.logs] }));
   }
 
   async function handleStripeCheckout() {
+    if (!amountMeetsMinimum) {
+      setState((prev) => ({
+        ...prev,
+        error: `Minimum amount is ${formatInr(MIN_AMOUNT_INR)}.`
+      }));
+      return;
+    }
     setState((prev) => ({ ...prev, loading: true, error: null }));
     try {
       const res = await createStripeCheckout(amount);
@@ -158,7 +170,8 @@ function App() {
               <p className="eyebrow">Payments demo</p>
               <h2 className="hero-title">Amount &amp; Checkout</h2>
               <p className="lede">
-                Set an amount in INR and use <strong>Checkout</strong> for the secure hosted payment page.
+                Set an amount in INR (minimum {formatInr(MIN_AMOUNT_INR)}) and use <strong>Checkout</strong> for
+                the secure hosted payment page.
               </p>
             </div>
             <div className="hero-controls">
@@ -167,11 +180,14 @@ function App() {
                   <span>Amount (INR)</span>
                   <input
                     type="number"
-                    min="0"
+                    min={MIN_AMOUNT_INR}
                     step="0.01"
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
                   />
+                  {!amountMeetsMinimum && (
+                    <span className="field-hint muted">Minimum {formatInr(MIN_AMOUNT_INR)} required.</span>
+                  )}
                 </label>
                 <div className="amount-meta">
                   <div className="pill pill--muted pill--amount">{amountDisplay}</div>
@@ -182,7 +198,7 @@ function App() {
                   type="button"
                   className="btn btn--checkout"
                   onClick={handleStripeCheckout}
-                  disabled={state.loading}
+                  disabled={state.loading || !amountMeetsMinimum}
                   aria-label="Open Stripe Checkout hosted payment page"
                 >
                   <span className="btn--checkout__shine" aria-hidden />
