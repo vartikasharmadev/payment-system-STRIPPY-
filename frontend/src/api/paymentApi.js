@@ -1,9 +1,10 @@
-const root = (import.meta.env.VITE_API_BASE_URL || "").replace(/\/$/, "");
+const root = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
 
 async function callBackend(path, options = {}) {
   const method = options.method || "GET";
   const headers = { ...options.headers };
 
+  
   if (method !== "GET" && method !== "HEAD") {
     headers["Content-Type"] = "application/x-www-form-urlencoded";
   }
@@ -24,9 +25,13 @@ async function callBackend(path, options = {}) {
 }
 
 export function createStripeCheckout(amount) {
-  return callBackend(`/payment/checkout?amount=${encodeURIComponent(amount)}`, { method: "POST" });
+  return callBackend(`/payment/checkout?amount=${encodeURIComponent(amount)}`, {
+    method: "POST",
+  });
 }
 
 export function getPayment(id) {
-  return callBackend(`/payment/status/${id}`, { method: "GET" });
+  return callBackend(`/payment/status/${id}`, {
+    method: "GET",
+  });
 }

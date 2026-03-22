@@ -26,7 +26,13 @@ public class StripeService {
     }
 
     public CheckoutSessionDto createCheckoutSession(Double amountInRupees) throws Exception {
-        Stripe.apiKey = secretKey;
+
+    if (amountInRupees == null || amountInRupees < 50) {
+        throw new IllegalArgumentException("Minimum amount is ₹50");
+    }
+
+    Stripe.apiKey = secretKey;
+       
 
         Payment payment = new Payment();
         payment.setAmount(amountInRupees);
