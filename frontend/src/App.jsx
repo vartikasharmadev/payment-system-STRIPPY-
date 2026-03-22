@@ -110,7 +110,7 @@ function App() {
   const numericAmount = Number(amount);
 
   //  validation (only allow >= 50 to avoid Stripe errors)
-  if (!amount || isNaN(numericAmount) || numericAmount < 50) {
+  if (!amount || isNaN(numericAmount) || numericAmount < 0) {
     setState((prev) => ({
       ...prev,
       error: "Minimum amount is ₹50",
