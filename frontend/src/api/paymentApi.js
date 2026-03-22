@@ -2,11 +2,14 @@ const root = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
 
 async function callBackend(path, options = {}) {
   const method = options.method || "GET";
+  const headers = { ...options.headers };
 
-  const res = await fetch(`${root}${path}`, {
-    method,
-    ...options,
-  });
+  
+  if (method !== "GET" && method !== "HEAD") {
+    headers["Content-Type"] = "application/x-www-form-urlencoded";
+  }
+
+  const res = await fetch(`${root}${path}`, { ...options, headers });
 
   if (!res.ok) {
     const body = await res.text();
