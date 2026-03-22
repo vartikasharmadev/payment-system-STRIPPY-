@@ -168,10 +168,15 @@ function App() {
           <div className="hero-grid">
             <div className="hero-copy">
               <p className="eyebrow">Payments demo</p>
-              <h2 className="hero-title">Amount &amp; Checkout</h2>
+              <div className="hero-title-wrap">
+                <h2 className="hero-title">Amount &amp; checkout</h2>
+                <span className="pill pill--min" title="Minimum payment in INR">
+                  Min {formatInr(MIN_AMOUNT_INR)}
+                </span>
+              </div>
               <p className="lede">
-                Set an amount in INR (minimum {formatInr(MIN_AMOUNT_INR)}) and use <strong>Checkout</strong> for
-                the secure hosted payment page.
+                <strong>Minimum {formatInr(MIN_AMOUNT_INR)}.</strong> Enter that or more in INR, then use{" "}
+                <strong>Checkout</strong> for Stripe’s hosted page.
               </p>
             </div>
             <div className="hero-controls">
@@ -208,7 +213,9 @@ function App() {
                   <span className="btn--checkout__shine" aria-hidden />
                   <span className="btn--checkout__inner">
                     <span className="btn--checkout__label">Checkout</span>
-                    <span className="btn--checkout__hint">Secure hosted page · cards &amp; wallets</span>
+                    <span className="btn--checkout__hint">
+                      Min {formatInr(MIN_AMOUNT_INR)} · secure page · cards &amp; wallets
+                    </span>
                   </span>
                   <span className="btn--checkout__arrow" aria-hidden>
                     →

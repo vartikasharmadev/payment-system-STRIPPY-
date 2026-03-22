@@ -547,14 +547,38 @@ body::after {
   margin: 0 0 0.5rem;
 }
 
-.hero-title {
+.hero-title-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
   margin: 0 0 0.5rem;
+}
+
+.hero-title-wrap .hero-title {
+  margin: 0;
+}
+
+.hero-title {
   font-size: clamp(1.35rem, 2.8vw, 1.65rem);
   font-weight: 700;
   font-family: var(--font-display);
   letter-spacing: -0.03em;
   color: var(--stripe-slate);
   line-height: 1.3;
+}
+
+.pill--min {
+  background: var(--stripe-warn-bg);
+  color: var(--stripe-warn);
+  border: 1px solid rgba(180, 83, 9, 0.4);
+  font-weight: 700;
+  font-size: 0.8125rem;
+  letter-spacing: 0.02em;
+}
+
+[data-theme="dark"] .pill--min {
+  border-color: rgba(252, 211, 77, 0.35);
 }
 
 .lede {
@@ -618,6 +642,11 @@ body::after {
 .field-hint {
   font-size: 0.75rem;
   font-weight: 400;
+}
+
+.field > .field-hint.muted {
+  font-weight: 600;
+  color: var(--stripe-slate-mid);
 }
 
 .field-hint--warn {
