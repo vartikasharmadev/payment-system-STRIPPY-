@@ -27,7 +27,7 @@ function prependStoredLog(line) {
 }
 
 function App() {
-  const [amount, setAmount] = useState("100.00");
+  const [amount, setAmount] = useState("");
   const [state, setState] = useState({
     loading: false,
     error: null,
