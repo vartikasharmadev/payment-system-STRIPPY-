@@ -109,10 +109,11 @@ function App() {
   async function handleStripeCheckout() {
   const numericAmount = Number(amount);
 
-  if (!amount || isNaN(numericAmount) || numericAmount <= 0) {
+  // ✅ validation (only allow >= 50 to avoid Stripe errors)
+  if (!amount || isNaN(numericAmount) || numericAmount < 50) {
     setState((prev) => ({
       ...prev,
-      error: "Please enter a valid amount greater than 0",
+      error: "Minimum amount is ₹50",
     }));
     return;
   }
@@ -125,6 +126,13 @@ function App() {
 
     if (!url) throw new Error("No redirect URL from server");
 
+    // optional logging (keeps your existing logic safe)
+    const id = res?.paymentId;
+    if (id != null) {
+      sessionStorage.setItem("strippy_checkout_payment_id", String(id));
+      setPollingPaymentId(id);
+    }
+
     window.location.assign(url);
 
   } catch (e) {
@@ -135,7 +143,6 @@ function App() {
     }));
   }
 }
-
   const checkoutStatus = state.checkoutPayment ? statusFromPayment(state.checkoutPayment) : "";
 
   return (
