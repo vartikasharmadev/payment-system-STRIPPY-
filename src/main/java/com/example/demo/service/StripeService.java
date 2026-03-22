@@ -26,7 +26,13 @@ public class StripeService {
     }
 
     public CheckoutSessionDto createCheckoutSession(Double amountInRupees) throws Exception {
-        Stripe.apiKey = secretKey;
+
+    if (amountInRupees == null || amountInRupees <= 0) {
+        throw new IllegalArgumentException("Invalid amount");
+    }
+
+    Stripe.apiKey = secretKey;
+       
 
         Payment payment = new Payment();
         payment.setAmount(amountInRupees);
