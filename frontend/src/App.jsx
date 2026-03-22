@@ -177,16 +177,20 @@ function App() {
             <div className="hero-controls">
               <div className="field-row">
                 <label className="field">
-                  <span>Amount (INR)</span>
+                  <span>Enter amount (INR)</span>
+                  <span className="field-hint muted">Minimum {formatInr(MIN_AMOUNT_INR)}</span>
                   <input
                     type="number"
                     min={MIN_AMOUNT_INR}
                     step="0.01"
                     value={amount}
+                    placeholder={`e.g. 100 · min ${formatInr(MIN_AMOUNT_INR)}`}
                     onChange={(e) => setAmount(e.target.value)}
                   />
                   {!amountMeetsMinimum && (
-                    <span className="field-hint muted">Minimum {formatInr(MIN_AMOUNT_INR)} required.</span>
+                    <span className="field-hint field-hint--warn">
+                      Enter at least {formatInr(MIN_AMOUNT_INR)} to continue.
+                    </span>
                   )}
                 </label>
                 <div className="amount-meta">

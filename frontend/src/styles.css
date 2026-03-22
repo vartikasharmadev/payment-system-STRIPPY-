@@ -620,6 +620,11 @@ body::after {
   font-weight: 400;
 }
 
+.field-hint--warn {
+  color: var(--stripe-warn);
+  font-weight: 500;
+}
+
 .amount-meta {
   display: flex;
   flex-wrap: wrap;
