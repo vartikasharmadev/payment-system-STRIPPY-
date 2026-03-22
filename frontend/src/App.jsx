@@ -109,7 +109,7 @@ function App() {
   async function handleStripeCheckout() {
   const numericAmount = Number(amount);
 
-  // ✅ validation (only allow >= 50 to avoid Stripe errors)
+  //  validation (only allow >= 50 to avoid Stripe errors)
   if (!amount || isNaN(numericAmount) || numericAmount < 50) {
     setState((prev) => ({
       ...prev,
