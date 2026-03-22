@@ -107,25 +107,34 @@ function App() {
   }
 
   async function handleStripeCheckout() {
-    setState((prev) => ({ ...prev, loading: true, error: null }));
-    try {
-      const res = await createStripeCheckout(amount);
-      const url = res?.url;
-      if (!url) throw new Error("No redirect URL from server");
-      const id = res?.paymentId;
-      if (id == null) throw new Error("No payment id from server");
+  const numericAmount = Number(amount);
 
-      sessionStorage.setItem(SK_CHECKOUT_PAYMENT_ID, String(id));
-      const openLine = `${formatTime()} — Opening Checkout · ${formatInr(Number(amount) || 0)}`;
-      prependStoredLog(openLine);
-
-      setPollingPaymentId(id);
-      window.location.assign(url);
-    } catch (e) {
-      setState((prev) => ({ ...prev, error: String(e.message || e), loading: false }));
-      pushLog(`Checkout failed (${formatInr(Number(amount) || 0)}): ${e.message || e}`);
-    }
+  if (!amount || isNaN(numericAmount) || numericAmount <= 0) {
+    setState((prev) => ({
+      ...prev,
+      error: "Please enter a valid amount greater than 0",
+    }));
+    return;
   }
+
+  setState((prev) => ({ ...prev, loading: true, error: null }));
+
+  try {
+    const res = await createStripeCheckout(numericAmount);
+    const url = res?.url;
+
+    if (!url) throw new Error("No redirect URL from server");
+
+    window.location.assign(url);
+
+  } catch (e) {
+    setState((prev) => ({
+      ...prev,
+      error: String(e.message || e),
+      loading: false,
+    }));
+  }
+}
 
   const checkoutStatus = state.checkoutPayment ? statusFromPayment(state.checkoutPayment) : "";
 
